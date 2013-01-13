@@ -9,6 +9,7 @@ int main(void) {
   cin >> *puzzle;
   
   //proper input; solve puzzle
+  //may have to implement a stack of alternatives here
   puzzle->solve();
   cout << *puzzle;
   

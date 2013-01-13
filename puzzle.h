@@ -6,14 +6,15 @@
 #include <cstdlib>
 #include <vector>
 #include <list>
-#include <set>
+#include "cell.h"
 
 using namespace std;
 
 class Puzzle {
   int gValues[81]; //given valuess
-  set<int> cValues[9][9]; //candidate values for each cell [row][col][values]
+  Cell cells[9][9];
   vector< vector<int> > solutions;
+  bool cellSolved;
   void givenToCand();
   void updateRCS(int row, int col, int value);
 public:

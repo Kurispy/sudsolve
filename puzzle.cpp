@@ -5,11 +5,14 @@ using namespace std;
 void Puzzle::givenToCand() {
   for (int i = 0; i < 9; i++) {
     for (int j = 0; j < 9; j++) {
-      if (gValues[i])
-        cValues[i][j].insert(gValues[i]);
+      if (gValues[i]) {
+        cells[i][j].cValues.insert(gValues[i]);
+        cells[i][j].isSolved = 1;
+        Cell::cellSolved = 1;
+      }
       else
         for (int k = 1; k < 10; k++)
-          cValues[i][j].insert(k);
+          cells[i][j].cValues.insert(k);
     }
   }
 }
@@ -29,11 +32,12 @@ void Puzzle::solve() {
   
   //if any cell becomes solved, update again
   //continue until a cell has not been solved
-  
-  for (int i = 0; i < 9; i++) {
-    for (int j = 0; j < 9; j++) {
-      if (cValues[i][j].size() == 1)
-        updateRCS(i, j, *cValues[i][j].begin());
+  while (cellSolved) {
+    for (int i = 0; i < 9; i++) {
+      for (int j = 0; j < 9; j++) {
+        if (cells[i][j].cValues.size() == 1)
+          updateRCS(i, j, *(cells[i][j].cValues.begin()));
+      }
     }
   }
   
