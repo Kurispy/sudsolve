@@ -2,9 +2,12 @@
 #define	PUZZLE_H
 
 #include <iostream>
+#include <cstdlib>
+
+using namespace std;
 
 class Puzzle {
-  int puzzle[81];
+  int gValues[81]; //given values
 public:
   void solve(void);
   friend istream& operator>> (istream &is, Puzzle &puzzle);

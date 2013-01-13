@@ -6,11 +6,11 @@ using namespace std;
 
 int main(void) {
   Puzzle *puzzle = new Puzzle();
-  cin >> puzzle
+  cin >> *(puzzle);
   
   //proper input; solve puzzle
-  puzzle.solve;
-  cout << puzzle;
+  puzzle->solve();
+  cout << *puzzle;
   
   return 0;
 } //main
