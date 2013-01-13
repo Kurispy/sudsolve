@@ -5,8 +5,8 @@
 using namespace std;
 
 int main(void) {
-  Puzzle *puzzle = new Puzzle();
-  cin >> *(puzzle);
+  Puzzle *puzzle = new Puzzle;
+  cin >> *puzzle;
   
   //proper input; solve puzzle
   puzzle->solve();
