@@ -44,12 +44,14 @@ void Puzzle::solve() {
   //eliminate known values from corresponding cell units
   //if any cell becomes solved, update again
   //continue until a cell has not been solved
+  int x = 0;
   do {
     Cell::cellSolved = 0;
     for (int i = 0; i < 9; i++)
       for (int j = 0; j < 9; j++)
         if (cells[i][j].cValues.size() == 1)
-          updateRCS(i, j, *(cells[i][j].cValues.begin()));
+          updateRCS(i, j, *(cells[i][j].cValues.begin())); //the first element of the first 3 rows is getting set to invalid
+      x = x + 1;
   } while (Cell::cellSolved);
   
   //deductive methods go here
