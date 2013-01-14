@@ -19,7 +19,7 @@ public:
   static stack<Puzzle*> *alternatives;
   static vector<Puzzle*> *solutions;
   Puzzle();
-  Puzzle(int row, int col, Puzzle *puzzle);
+  Puzzle(int row, int col, int value, Puzzle *puzzle);
   void pushAlt(int row, int col, int value, Puzzle *puzzle);
   static void printSolutions();
   void solve();

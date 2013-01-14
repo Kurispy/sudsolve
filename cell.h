@@ -8,11 +8,10 @@ using namespace std;
 class Cell {
 public:
   bool isSolved;
-  static bool invalidCell; //flag set when a cell is reduced to 0 candidates
+  bool invalidCell;
   static bool cellSolved; //flag set when a cell is solved
   set<int> cValues;
-  void update(int value);
-
+  void eliminate(int value);
 };
 
 #endif	/* CELL_H */

@@ -1,11 +1,9 @@
 #include "cell.h"
 
-bool Cell::invalidCell = 0;
 bool Cell::cellSolved = 0;
 
-void Cell::update(int value) {
-  
-  
+void Cell::eliminate(int value) {
+  cValues.erase(value);
   
   if (cValues.size() == 1) {
     cellSolved = 1;

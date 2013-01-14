@@ -2,3 +2,5 @@ sudsolve
 *.[oa]
 *~
 /nbproject/
+/input/
+/output/
