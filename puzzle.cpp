@@ -36,7 +36,7 @@ void Puzzle::updateRCS(int row, int col, int value) {
   //update square
   for (int i = 3 * (row / 3); i < 3 * (row / 3) + 3; i++)
     for (int j = 3 * (row / 3); j < 3 * (row / 3) + 3; j++)
-      if (i != row || j != col)
+      if (i != row && j != col)
         cells[i][j].eliminate(value);
 }
 
