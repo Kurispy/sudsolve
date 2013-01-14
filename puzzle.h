@@ -12,13 +12,15 @@
 using namespace std;
 
 class Puzzle {
+  bool solved;
   Cell cells[9][9];
   void updateRCS(int row, int col, int value);
 public:
   static stack<Puzzle*> *alternatives;
-  static vector< vector<int> > *solutions;
+  static vector<Puzzle*> *solutions;
   Puzzle();
-  Puzzle(Puzzle *puzzle);
+  Puzzle(int row, int col, Puzzle *puzzle);
+  void pushAlt(int row, int col, int value, Puzzle *puzzle);
   static void printSolutions();
   void solve();
   friend istream& operator>> (istream &is, Puzzle &puzzle);

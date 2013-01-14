@@ -5,7 +5,7 @@
 using namespace std;
 
 int main(void) {
-  Puzzle *cPuzzle; //pointer to current puzzle
+  Puzzle *cPuzzle = new Puzzle; //pointer to current puzzle
   cin >> *cPuzzle;
   
   //for multiline, make sure to clear solutions

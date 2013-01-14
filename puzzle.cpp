@@ -3,13 +3,17 @@
 using namespace std;
 
 stack<Puzzle*> *Puzzle::alternatives = new stack<Puzzle*>;
-vector< vector<int> > *Puzzle::solutions = new vector< vector<int> >;
+vector<Puzzle*> *Puzzle::solutions = new vector<Puzzle*>;
 
 Puzzle::Puzzle() {
   
 }
 
-Puzzle::Puzzle(Puzzle *puzzle) {
+Puzzle::Puzzle(int row, int col, Puzzle *puzzle) {
+  
+}
+
+void Puzzle::pushAlt(int row, int col, int value, Puzzle *puzzle) {
   
 }
 
@@ -32,12 +36,10 @@ void Puzzle::solve() {
   //continue until a cell has not been solved
   while (Cell::cellSolved) {
     Cell::cellSolved = 0;
-    for (int i = 0; i < 9; i++) {
-      for (int j = 0; j < 9; j++) {
+    for (int i = 0; i < 9; i++)
+      for (int j = 0; j < 9; j++)
         if (cells[i][j].cValues.size() == 1)
           updateRCS(i, j, *(cells[i][j].cValues.begin()));
-      }
-    }
   }
   
   //deductive methods go here
@@ -46,22 +48,18 @@ void Puzzle::solve() {
   
   
   //if the puzzle has not been solved, we need to guess and check every possible alternative
-  //set an unsolved cell to solved, then call solve on that puzzle
-  for (int i = 0; i < 9; i++) {
-    for (int j = 0; j < 9; j++) {
-      if (!cells[i][j].isSolved){
-        Puzzle alternative(this);
-        for (int k = 1; k < 10; k++) {
-          if(cells[i][j].cValues.find(k) != cells[i][j].cValues.end()) {
-            cells[i][j].cValues.clear();
-            cells[i][j].cValues.insert(k);
-          }
-        }
-        cells[i][j].isSolved = 1;
-        Cell::cellSolved = 1;
+  solved = 1;
+  for (int i = 0; i < 9; i++)
+    for (int j = 0; j < 9; j++)
+      if (!cells[i][j].isSolved) {
+        solved = 0;
+        for (int k = 1; k < 10; k++)
+          if(cells[i][j].cValues.find(k) != cells[i][j].cValues.end())
+            pushAlt(i, j, k, this);
       }
-    }
-  }
+  
+  if (solved)
+    solutions->push_back(this);
 
 }
 
