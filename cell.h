@@ -11,6 +11,7 @@ public:
   static bool invalidCell; //flag set when a cell is reduced to 0 candidates
   static bool cellSolved; //flag set when a cell is solved
   set<int> cValues;
+  void update(int value);
 
 };
 

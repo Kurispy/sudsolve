@@ -5,13 +5,22 @@
 using namespace std;
 
 int main(void) {
-  Puzzle *puzzle = new Puzzle;
-  cin >> *puzzle;
+  Puzzle *cPuzzle; //pointer to current puzzle
+  cin >> *cPuzzle;
   
-  //proper input; solve puzzle
-  //may have to implement a stack of alternatives here
-  puzzle->solve();
-  cout << *puzzle;
+  //for multiline, make sure to clear solutions
+  
+  Puzzle::alternatives->push(cPuzzle);
+  while (!Puzzle::alternatives->empty()) {
+    cPuzzle = Puzzle::alternatives->top();
+    Puzzle::alternatives->pop();
+    cPuzzle->solve();
+  }
+  
+  if (!Puzzle::solutions->empty())
+    cout << *cPuzzle;
+  else
+    cout << "No solutions.\n";
   
   return 0;
 } //main
