@@ -15,15 +15,18 @@ class Puzzle {
   bool solved;
   Cell cells[9][9];
   void updateRCS(Cell &cell);
+  void svEliminate();
+  void sgExclusion();
   void sgExclusionR(int row, int value);
   void sgExclusionC(int col, int value);
+  void checkAlt();
+  void pushAlt(int row, int col, int value);
 public:
   queue<Cell> solvedCells;
   static stack<Puzzle*> *alternatives;
   static vector<Puzzle> *solutions;
   Puzzle();
   Puzzle(int row, int col, int value, Puzzle *puzzle);
-  void pushAlt(int row, int col, int value, Puzzle *puzzle);
   static void printSolutions();
   void printPossible();
   void solve();
