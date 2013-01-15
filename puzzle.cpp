@@ -126,6 +126,10 @@ istream& operator>> (istream &is, Puzzle &puzzle) {
         cout << "ERROR: expected <value> saw <eof>\n";
         exit(0);
       }
+      else if (test == (int) '\n') {
+        cout << "ERROR: expected <value> saw " << "\\n" << "\n";
+        exit(0);
+      }
       else if (isprint(test)) {
         if (test >= (int) '1' && test <= (int) '9') {
           puzzle.cells[i][j].cValues.insert(test - '0'); //valid value; convert to integer
