@@ -25,6 +25,7 @@ public:
   static void printSolutions();
   void printPossible();
   void solve();
+  void onlySquare();
   friend istream& operator>> (istream &is, Puzzle &puzzle);
   friend ostream& operator<< (ostream &os, const Puzzle &puzzle);
   

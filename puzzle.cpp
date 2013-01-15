@@ -11,6 +11,7 @@ Puzzle::Puzzle()
     for (int j = 0; j < 9; j++) {
       cells[i][j].row = i;
       cells[i][j].col = j;
+      cells[i][j].square = (i / 3) + (j / 3); 
     }
 }
 
@@ -22,6 +23,7 @@ Puzzle::Puzzle(int row, int col, int value, Puzzle *puzzle)
   cells[row][col].invalidCell = 0;
   cells[row][col].row = row;
   cells[row][col].col = col;
+  cells[row][col].square = (row / 3) + (col / 3);
   solvedCells.push(cells[row][col]);
 
   
@@ -65,7 +67,8 @@ void Puzzle::solve() {
     solvedCells.pop();
   }
   
-  //deductive methods go here
+  //deductive strategies
+  onlySquare();
   
   //printPossible();
   //if the puzzle has not been solved, we need to guess and check every possible alternative
@@ -87,6 +90,25 @@ void Puzzle::solve() {
     solutions->push_back(*this);
   }
 
+}
+
+void Puzzle::onlySquare() {
+  //if there is only one place to allocate the last value in a square, put the value there
+  
+  //search for a given value within a square
+  for (int i = 1; i < 10; i++) {
+    for (int j = 0; j < 9; j++) {
+      for (int k = 0; k < 9; k++) {
+        for (int l = 0; l < 9; l++) {
+          if (l == cells[j][k].square && cells[j][k].cValues.find(i) != cells[j][k].cValues.end()) {
+            
+          } 
+        }
+      }
+    }
+  }
+  
+  //if only one cell has that value, set it to that value
 }
 
 void Puzzle::printPossible() {

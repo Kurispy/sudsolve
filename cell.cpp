@@ -18,6 +18,7 @@ void Cell::eliminate(int value, Puzzle &puzzle) {
 Cell& Cell::operator=(const Cell &rhs) {
   row = rhs.row;
   col = rhs.col;
+  square = rhs.square;
   cValues = rhs.cValues;
   isSolved = rhs.isSolved;
   invalidCell = rhs.invalidCell;

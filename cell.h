@@ -12,6 +12,7 @@ public:
   Cell();
   int row;
   int col;
+  int square;
   set<int> cValues;
   bool isSolved;
   bool invalidCell;
