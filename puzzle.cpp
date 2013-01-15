@@ -3,61 +3,69 @@
 using namespace std;
 
 stack<Puzzle*> *Puzzle::alternatives = new stack<Puzzle*>;
-vector<Puzzle*> *Puzzle::solutions = new vector<Puzzle*>;
+vector<Puzzle> *Puzzle::solutions = new vector<Puzzle>;
 
 Puzzle::Puzzle() {
-  
+  for (int i = 0; i < 9; i++)
+    for (int j = 0; j < 9; j++) {
+      cells[i][j].row = i;
+      cells[i][j].col = j;
+    }
 }
 
 Puzzle::Puzzle(int row, int col, int value, Puzzle *puzzle) {
+  //change the value of a single cell
   cells[row][col].cValues.insert(value);
+  cells[row][col].isSolved = 1;
+  cells[row][col].row = row;
+  cells[row][col].col = col;
+  solvedCells.push(cells[row][col]);
+
+  
+  //leave the rest the same
   for (int i = 0; i < 9; i++)
     for (int j = 0; j < 9; j++)
-      if (i != row && j != col)
-        cells[i][j].cValues = puzzle->cells[i][j].cValues;
+      if (i != row || j != col)
+        cells[i][j] = puzzle->cells[i][j];
 }
 
 void Puzzle::pushAlt(int row, int col, int value, Puzzle *puzzle) {
-  Puzzle alternative(row, col, value, puzzle);
-  alternatives->push(&alternative);
+  Puzzle *alternative = new Puzzle(row, col, value, puzzle);
+  alternatives->push(alternative);
 }
 
-void Puzzle::updateRCS(int row, int col, int value) {
+void Puzzle::updateRCS(Cell &cell) {
   //update row
   for (int i = 0; i < 9; i++)
-    if (i != col)
-      cells[row][i].eliminate(value);
+    if (i != cell.col)
+      cells[cell.row][i].eliminate(*(cell.cValues.begin()), *this);
   
   //update column
   for (int i = 0; i < 9; i++)
-    if (i != row)
-      cells[i][col].eliminate(value);
+    if (i != cell.row)
+      cells[i][cell.col].eliminate(*(cell.cValues.begin()), *this);
   
   //update square
-  for (int i = 3 * (row / 3); i < 3 * (row / 3) + 3; i++)
-    for (int j = 3 * (row / 3); j < 3 * (row / 3) + 3; j++)
-      if (i != row && j != col)
-        cells[i][j].eliminate(value);
+  for (int i = 3 * (cell.row / 3); i < 3 * (cell.row / 3) + 3; i++)
+    for (int j = 3 * (cell.col / 3); j < 3 * (cell.col / 3) + 3; j++)
+      if (i != cell.row || j != cell.col)
+        cells[i][j].eliminate(*(cell.cValues.begin()), *this);
 }
 
 void Puzzle::solve() {
   //eliminate known values from corresponding cell units
   //if any cell becomes solved, update again
   //continue until a cell has not been solved
-  int x = 0;
-  do {
-    Cell::cellSolved = 0;
-    for (int i = 0; i < 9; i++)
-      for (int j = 0; j < 9; j++)
-        if (cells[i][j].cValues.size() == 1)
-          updateRCS(i, j, *(cells[i][j].cValues.begin())); //the first element of the first 3 rows is getting set to invalid
-      x = x + 1;
-  } while (Cell::cellSolved);
+  
+  while (!solvedCells.empty()) {
+    updateRCS(solvedCells.front());
+    solvedCells.pop();
+  }
   
   //deductive methods go here
   
   
-  
+  //printPossible();
   //if the puzzle has not been solved, we need to guess and check every possible alternative
   solved = 1;
   for (int i = 0; i < 9; i++)
@@ -69,19 +77,39 @@ void Puzzle::solve() {
         for (int k = 1; k < 10; k++)
           if(cells[i][j].cValues.find(k) != cells[i][j].cValues.end())
             pushAlt(i, j, k, this);
+        return;
       }
     }
   
-  if (solved)
-    solutions->push_back(this);
+  if (solved) {
+    solutions->push_back(*this);
+    cout << "Solution found" << endl;
+  }
 
+}
+
+void Puzzle::printPossible() {
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++) {
+      cout << "[";
+      for (int k = 1; k < 10; k++) {
+        if (cells[i][j].cValues.find(k) != cells[i][j].cValues.end())
+          cout << *(cells[i][j].cValues.find(k));
+        else
+          cout << " ";
+      }
+      cout << "]" << " ";
+    }
+    cout << endl;
+  }
+  cout << endl;
 }
 
 void Puzzle::printSolutions() {
   for (unsigned int i = 0; i < solutions->size(); i++) {
     for (int j = 0; j < 9; j++)
       for (int k = 0; k < 9; k++)
-        cout << *(solutions->at(i)->cells[j][k].cValues.begin());
+        cout << *(solutions->at(i).cells[j][k].cValues.begin());
     
     cout << "\n";
   }
@@ -102,6 +130,7 @@ istream& operator>> (istream &is, Puzzle &puzzle) {
         if (test >= (int) '1' && test <= (int) '9') {
           puzzle.cells[i][j].cValues.insert(test - '0'); //valid value; convert to integer
           puzzle.cells[i][j].isSolved = 1;
+          puzzle.solvedCells.push(puzzle.cells[i][j]);
         }
         else if (test == (int) '.') {
           for (int k = 1; k < 10; k++)

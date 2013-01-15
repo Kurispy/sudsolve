@@ -12,9 +12,12 @@ int main(void) {
   
   Puzzle::alternatives->push(cPuzzle);
   while (!Puzzle::alternatives->empty()) {
+    cout << Puzzle::alternatives->size() << endl;
     cPuzzle = Puzzle::alternatives->top();
     Puzzle::alternatives->pop();
     cPuzzle->solve();
+    delete cPuzzle;
+    cPuzzle = NULL;
   }
   
   if (!Puzzle::solutions->empty())
