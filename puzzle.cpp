@@ -179,7 +179,12 @@ istream& operator>> (istream &is, Puzzle &puzzle) {
     if (isprint(test)) {
       cout << (char) test << "\n";
       exit(0);
-    } else {
+    }
+    else if (test == (int) '\n') {
+      cout << "\\n" << "\n";
+      exit(0);
+    }
+    else {
       cout << "\\x" << setw(2) << setfill('0') << hex << test << "\n";
       exit(0);
     }
