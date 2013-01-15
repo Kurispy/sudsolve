@@ -9,7 +9,6 @@ class Puzzle;
 
 class Cell {
 public:
-  Cell();
   int row;
   int col;
   set<int> cValues;

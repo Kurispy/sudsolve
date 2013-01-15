@@ -12,7 +12,7 @@ int main(void) {
   
   Puzzle::alternatives->push(cPuzzle);
   while (!Puzzle::alternatives->empty()) {
-    cout << Puzzle::alternatives->size() << endl;
+    //cout << Puzzle::alternatives->size() << endl;
     cPuzzle = Puzzle::alternatives->top();
     Puzzle::alternatives->pop();
     cPuzzle->solve();
@@ -20,8 +20,10 @@ int main(void) {
     cPuzzle = NULL;
   }
   
-  if (!Puzzle::solutions->empty())
+  if (!Puzzle::solutions->empty()) {
     cout << *cPuzzle;
+    
+  }
   else
     cout << "No solutions.\n";
   

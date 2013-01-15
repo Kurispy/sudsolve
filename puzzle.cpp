@@ -14,9 +14,10 @@ Puzzle::Puzzle() {
 }
 
 Puzzle::Puzzle(int row, int col, int value, Puzzle *puzzle) {
-  //change the value of a single cell
+  //decide the value of a single undetermined cell
   cells[row][col].cValues.insert(value);
   cells[row][col].isSolved = 1;
+  cells[row][col].invalidCell = 0;
   cells[row][col].row = row;
   cells[row][col].col = col;
   solvedCells.push(cells[row][col]);
@@ -65,7 +66,6 @@ void Puzzle::solve() {
   //deductive methods go here
   
   
-  //printPossible();
   //if the puzzle has not been solved, we need to guess and check every possible alternative
   solved = 1;
   for (int i = 0; i < 9; i++)
@@ -83,7 +83,6 @@ void Puzzle::solve() {
   
   if (solved) {
     solutions->push_back(*this);
-    cout << "Solution found" << endl;
   }
 
 }
@@ -170,25 +169,25 @@ istream& operator>> (istream &is, Puzzle &puzzle) {
   }
   
 
-  // <editor-fold defaultstate="collapsed" desc="SINGLE LINE FILES">
-  test = is.get();
-  test = is.get(); //weird
-  
-  if (!is.eof()) {
-    cout << "ERROR: expected <eof> saw ";
-    if (isprint(test)) {
-      cout << (char) test << "\n";
-      exit(0);
-    }
-    else if (test == (int) '\n') {
-      cout << "\\n" << "\n";
-      exit(0);
-    }
-    else {
-      cout << "\\x" << setw(2) << setfill('0') << hex << test << "\n";
-      exit(0);
-    }
-  }// </editor-fold>
+//  // <editor-fold defaultstate="collapsed" desc="SINGLE LINE FILES">
+//  test = is.get();
+//  test = is.get(); //weird
+//  
+//  if (!is.eof()) {
+//    cout << "ERROR: expected <eof> saw ";
+//    if (isprint(test)) {
+//      cout << (char) test << "\n";
+//      exit(0);
+//    }
+//    else if (test == (int) '\n') {
+//      cout << "\\n" << "\n";
+//      exit(0);
+//    }
+//    else {
+//      cout << "\\x" << setw(2) << setfill('0') << hex << test << "\n";
+//      exit(0);
+//    }
+//  }// </editor-fold>
 
   return is;
 }
