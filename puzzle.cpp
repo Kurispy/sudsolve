@@ -5,7 +5,8 @@ using namespace std;
 stack<Puzzle*> *Puzzle::alternatives = new stack<Puzzle*>;
 vector<Puzzle> *Puzzle::solutions = new vector<Puzzle>;
 
-Puzzle::Puzzle() {
+Puzzle::Puzzle()
+:solved(0) {
   for (int i = 0; i < 9; i++)
     for (int j = 0; j < 9; j++) {
       cells[i][j].row = i;
@@ -13,7 +14,8 @@ Puzzle::Puzzle() {
     }
 }
 
-Puzzle::Puzzle(int row, int col, int value, Puzzle *puzzle) {
+Puzzle::Puzzle(int row, int col, int value, Puzzle *puzzle)
+:solved(0) {
   //decide the value of a single undetermined cell
   cells[row][col].cValues.insert(value);
   cells[row][col].isSolved = 1;
@@ -65,7 +67,7 @@ void Puzzle::solve() {
   
   //deductive methods go here
   
-  
+  //printPossible();
   //if the puzzle has not been solved, we need to guess and check every possible alternative
   solved = 1;
   for (int i = 0; i < 9; i++)

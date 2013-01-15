@@ -13,7 +13,6 @@ int main(void) {
     cin >> *cPuzzle;
     Puzzle::alternatives->push(cPuzzle);
     while (!Puzzle::alternatives->empty()) {
-      //cout << Puzzle::alternatives->size() << endl;
       cPuzzle = Puzzle::alternatives->top();
       Puzzle::alternatives->pop();
       cPuzzle->solve();
@@ -21,14 +20,17 @@ int main(void) {
       cPuzzle = NULL;
     }
     
-  }
   
-  if (!Puzzle::solutions->empty()) {
-    cout << *cPuzzle;
-    cout << "Passed!";
-  }
-  else
-    cout << "No solutions.\n";
   
+    if (!Puzzle::solutions->empty()) {
+      //cout << *cPuzzle;
+      cout << "Passed!\n";
+    }
+    else
+      cout << "No solutions.\n";
+    
+    Puzzle::solutions->clear();
+    cPuzzle = new Puzzle;
+  }
   return 0;
 } //main
