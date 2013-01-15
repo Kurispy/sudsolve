@@ -15,6 +15,8 @@ class Puzzle {
   bool solved;
   Cell cells[9][9];
   void updateRCS(Cell &cell);
+  void sgExclusionR(int row, int value);
+  void sgExclusionC(int col, int value);
 public:
   queue<Cell> solvedCells;
   static stack<Puzzle*> *alternatives;
@@ -25,7 +27,6 @@ public:
   static void printSolutions();
   void printPossible();
   void solve();
-  void onlySquare();
   friend istream& operator>> (istream &is, Puzzle &puzzle);
   friend ostream& operator<< (ostream &os, const Puzzle &puzzle);
   

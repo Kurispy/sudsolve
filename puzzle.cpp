@@ -57,6 +57,51 @@ void Puzzle::updateRCS(Cell &cell) {
         cells[i][j].eliminate(*(cell.cValues.begin()), *this);
 }
 
+void Puzzle::sgExclusionR(int row, int value) {
+  //if all cells that hold candidacy for a particular number in a particular row or column lie within the same square, 
+  //that number can be eliminated from the candidate list of all other cells in the square
+  
+  //the value argument must be a candidate in at least 2 cells
+  
+  //check row
+  int square = -1;
+  for (int i = 0; i < 9; i++) {
+    if (!cells[row][i].isSolved && cells[row][i].cValues.find(value) != cells[row][i].cValues.end()) {
+      if (cells[row][i].square == square)
+        square = cells[row][i].square;
+      else if (square != -1)
+        return; //the cells with the values are in different squares and this rule cannot be used
+    }
+  }
+  
+  //all conditions cleared; eliminate this value from all cells in the square that are not in this row
+  for (int i = (square / 3) * 3; i < (square / 3) * 3 + 3; i++)
+    for (int j = (square % 3) * 3; j < (square % 3) * 3 + 3; j++)
+      if (i != row)
+        cells[i][j].eliminate(value, *this);
+}
+
+void Puzzle::sgExclusionC(int col, int value) {
+  //the value argument must be a candidate in at least 2 cells
+  
+  //check column
+  int square = -1;
+  for (int i = 0; i < 9; i++) {
+    if (!cells[i][col].isSolved && cells[i][col].cValues.find(value) != cells[i][col].cValues.end()) {
+      if (cells[i][col].square == square)
+        square = cells[i][col].square;
+      else if (square != -1)
+        return; //the cells with the values are in different squares and this rule cannot be used
+    }
+  }
+  
+  //all conditions cleared; eliminate this value from all cells in the square that are not in this row
+  for (int i = (square / 3) * 3; i < (square / 3) * 3 + 3; i++)
+    for (int j = (square % 3) * 3; j < (square % 3) * 3 + 3; j++)
+      if (i != col)
+        cells[i][j].eliminate(value, *this);
+}
+
 void Puzzle::solve() {
   //eliminate known values from corresponding cell units
   //if any cell becomes solved, update again
@@ -68,7 +113,9 @@ void Puzzle::solve() {
   }
   
   //deductive strategies
-  onlySquare();
+  
+  
+  
   
   //printPossible();
   //if the puzzle has not been solved, we need to guess and check every possible alternative
@@ -90,25 +137,6 @@ void Puzzle::solve() {
     solutions->push_back(*this);
   }
 
-}
-
-void Puzzle::onlySquare() {
-  //if there is only one place to allocate the last value in a square, put the value there
-  
-  //search for a given value within a square
-  for (int i = 1; i < 10; i++) {
-    for (int j = 0; j < 9; j++) {
-      for (int k = 0; k < 9; k++) {
-        for (int l = 0; l < 9; l++) {
-          if (l == cells[j][k].square && cells[j][k].cValues.find(i) != cells[j][k].cValues.end()) {
-            
-          } 
-        }
-      }
-    }
-  }
-  
-  //if only one cell has that value, set it to that value
 }
 
 void Puzzle::printPossible() {
