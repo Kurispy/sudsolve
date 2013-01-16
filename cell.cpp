@@ -2,17 +2,19 @@
 #include "puzzle.h"
 
 Cell::Cell()
-:isSolved(0), invalidCell(0) {
+:isSolved(0) {
   
 }
 
-void Cell::eliminate(int value, Puzzle &puzzle) {
+void Cell::eliminate(int value, Puzzle &puzzle, bool *valid) {
   if (cValues.erase(value) && cValues.size() == 1 && !isSolved) {
       puzzle.solvedCells.push(*this);
       isSolved = 1;
   }
-  else if (cValues.empty()) 
-    invalidCell = 1;
+  else if (cValues.empty()) {
+    *valid = 0;
+    return;
+  }
 }
 
 Cell& Cell::operator=(const Cell &rhs) {
@@ -21,6 +23,5 @@ Cell& Cell::operator=(const Cell &rhs) {
   square = rhs.square;
   cValues = rhs.cValues;
   isSolved = rhs.isSolved;
-  invalidCell = rhs.invalidCell;
   return *this;
 }

@@ -14,11 +14,11 @@ using namespace std;
 class Puzzle {
   bool solved;
   Cell cells[9][9];
-  void updateRCS(Cell &cell);
-  void svEliminate();
-  void sgExclusion();
-  void sgExclusionR(int row, int value);
-  void sgExclusionC(int col, int value);
+  void updateRCS(Cell &cell, bool *valid);
+  void svEliminate(bool *valid);
+  void sgExclusion(bool *valid);
+  void sgExclusionR(int row, int value, bool *valid);
+  void sgExclusionC(int col, int value, bool *valid);
   void checkAlt();
   void pushAlt(int row, int col, int value);
 public:

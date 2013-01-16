@@ -15,8 +15,7 @@ public:
   int square;
   set<int> cValues; //should be changed to unordered_set
   bool isSolved;
-  bool invalidCell;
-  void eliminate(int value, Puzzle &puzzle);
+  void eliminate(int value, Puzzle &puzzle, bool *valid); //returns 0 if a cell was invalidated, 1 otherwise
   Cell& operator=(const Cell &rhs);
 };
 
