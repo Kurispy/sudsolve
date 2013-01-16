@@ -199,7 +199,8 @@ void Puzzle::solve() {
   checkAlt();
   
   //This point should only be reached if the puzzle is valid
-  solutions->push_back(*this);
+  if (solved)
+    solutions->push_back(*this);
 
 }
 
@@ -226,7 +227,6 @@ void Puzzle::printSolutions() {
     for (int j = 0; j < 9; j++)
       for (int k = 0; k < 9; k++)
         cout << *(solutions->at(i).cells[j][k].cValues.begin());
-    
     cout << "\n";
   }
 }

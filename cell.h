@@ -13,7 +13,7 @@ public:
   int row;
   int col;
   int square;
-  set<int> cValues; //should be changed to unordered_set
+  set<int> cValues; //could be changed to unordered_set
   bool isSolved;
   void eliminate(int value, Puzzle &puzzle, bool *valid); //returns 0 if a cell was invalidated, 1 otherwise
   void onlyCell(int value, Puzzle &puzzle);

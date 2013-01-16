@@ -1,3 +1,4 @@
+# tech; Chen, Christopher
 sudsolve : cell.o main.o puzzle.o 
 	g++ -Wall -g -o sudsolve  cell.o main.o puzzle.o 
 

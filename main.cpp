@@ -5,6 +5,10 @@
 
 using namespace std;
 
+//Sudoku is hard,
+//however with this program,
+//it's very easy.
+
 int main(void) {
   Puzzle *cPuzzle = new Puzzle; //pointer to current puzzle
   
@@ -16,7 +20,6 @@ int main(void) {
     cin >> *cPuzzle;
     Puzzle::alternatives->push(cPuzzle);
     while (!Puzzle::alternatives->empty()) {
-      //cout << Puzzle::alternatives->size() << endl;
       cPuzzle = Puzzle::alternatives->top();
       Puzzle::alternatives->pop();
       cPuzzle->solve();
@@ -29,7 +32,6 @@ int main(void) {
   
     if (!Puzzle::solutions->empty()) {
       cout << *cPuzzle;
-      //cout << "Passed! ";
     }
     else
       cout << "No solutions.\n";
