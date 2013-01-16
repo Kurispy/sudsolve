@@ -85,34 +85,53 @@ void Puzzle::sgExclusion(bool *valid) {
   set<int>::iterator itr;
   
   //Find a cell that has not been solved
-  for (int i = 0; i < 9; i++)
+  for (int i = 0; i < 9; i++) {
     for (int j = 0; j < 9; j++) {
       if (!cells[i][j].isSolved) {
         //iterate through each candidate value, applying sgExclusion to each
         for (itr = cells[i][j].cValues.begin(); itr != cells[i][j].cValues.end(); itr++) {
           sgExclusionR(i, *itr, valid);
+          if (!solvedCells.empty()) {
+            svEliminate(valid);
+            break;
+          }
           sgExclusionC(j, *itr, valid);
-          svEliminate(valid); //we might have solved some cells, so we need to eliminate those solved values
+          if (!solvedCells.empty()) {
+            svEliminate(valid);
+            break;
+          }
         }
       }
     }
+  }
 }
 
 void Puzzle::sgExclusionR(int row, int value, bool *valid) {
   //if all cells that hold candidacy for a particular number in a particular row or column lie within the same square, 
   //that number can be eliminated from the candidate list of all other cells in the square
   
-  //the value argument must be a candidate in at least 2 cells
+  //the value argument must be a candidate in at least 1 cell
   
   //check row
   int square = -1;
+  Cell *firstOccur, *lastOccur;
   for (int i = 0; i < 9; i++) {
     if (!cells[row][i].isSolved && cells[row][i].cValues.find(value) != cells[row][i].cValues.end()) {
-      if (square == -1) //find first instance
+      if (square == -1) { //find first instance
         square = cells[row][i].square;
+        firstOccur = &cells[row][i];
+        lastOccur = &cells[row][i];
+      }
       else if (square != cells[row][i].square)
         return; //the cells with the values are in different squares and this rule cannot be used
+      else //will only set when the value exists in only one cell
+        lastOccur = &cells[row][i];
     }
+  }
+  
+  if (firstOccur == lastOccur) { //special case; use only cell rule instead
+    firstOccur->onlyCell(value, *this);
+    return;
   }
   
   //all conditions cleared; eliminate this value from all cells in the square that are not in this row
@@ -123,27 +142,39 @@ void Puzzle::sgExclusionR(int row, int value, bool *valid) {
 }
 
 void Puzzle::sgExclusionC(int col, int value, bool *valid) {
-  //the value argument must be a candidate in at least 2 cells
+  //the value argument must be a candidate in at least 1 cell
   
   //check column
   int square = -1;
+  Cell *firstOccur, *lastOccur = NULL;
   for (int i = 0; i < 9; i++) {
     if (!cells[i][col].isSolved && cells[i][col].cValues.find(value) != cells[i][col].cValues.end()) {
-      if (square == -1)
+      if (square == -1) {
         square = cells[i][col].square;
+        firstOccur = &cells[i][col];
+        lastOccur = &cells[i][col];
+      }
       else if (square != cells[i][col].square)
         return; //the cells with the values are in different squares and this rule cannot be used
+      else //will only set when the value exists in only one cell
+        lastOccur = &cells[i][col];
     }
+  }
+  
+  if (firstOccur == lastOccur) { //special case; use only cell rule instead
+    firstOccur->onlyCell(value, *this);
+    return;
   }
   
   //all conditions cleared; eliminate this value from all cells in the square that are not in this row
   for (int i = (square / 3) * 3; i < (square / 3) * 3 + 3; i++)
     for (int j = (square % 3) * 3; j < (square % 3) * 3 + 3; j++)
-      if (i != col)
+      if (j != col)
         cells[i][j].eliminate(value, *this, valid);
 }
 
 void Puzzle::solve() {
+  //A validity check needs to be done after every strategy
   bool validity = 1;
   bool *valid = &validity;
   
@@ -154,26 +185,26 @@ void Puzzle::solve() {
     return;
   
   //DEDUCTIVE STRATEGIES
-  //Check if all cells are valid
   
-  //printPossible();
+  //Only Cell Rule
+  //This has been implemented as a special case of Sub-Group Exclusion
+  
   //Sub-Group Exclusion
-  //sgExclusion(valid);
+  sgExclusion(valid);
   
-  
-  
-  //printPossible();
+  if (!*valid)
+    return;
   
   //Check if the puzzle is solved, and if we need to create alternatives
   checkAlt();
   
-  if (solved) {
-    solutions->push_back(*this);
-  }
+  //This point should only be reached if the puzzle is valid
+  solutions->push_back(*this);
 
 }
 
 void Puzzle::printPossible() {
+  cout << endl;
   for (int i = 0; i < 9; i++) {
     for (int j = 0; j < 9; j++) {
       cout << "[";
@@ -255,9 +286,7 @@ istream& operator>> (istream &is, Puzzle &puzzle) {
   }
   
 
-//  // <editor-fold defaultstate="collapsed" desc="SINGLE LINE FILES">
 //  test = is.get();
-//  test = is.get(); //weird
 //  
 //  if (!is.eof()) {
 //    cout << "ERROR: expected <eof> saw ";
@@ -273,7 +302,6 @@ istream& operator>> (istream &is, Puzzle &puzzle) {
 //      cout << "\\x" << setw(2) << setfill('0') << hex << test << "\n";
 //      exit(0);
 //    }
-//  }// </editor-fold>
 
   return is;
 }

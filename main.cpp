@@ -11,6 +11,7 @@ int main(void) {
   
   //for multiline, make sure to clear solutions
   while (!cin.eof()) {
+    cout << "Solving...";
     clock_t begin =clock();
     cin >> *cPuzzle;
     Puzzle::alternatives->push(cPuzzle);
@@ -27,8 +28,8 @@ int main(void) {
   
   
     if (!Puzzle::solutions->empty()) {
-      //cout << *cPuzzle;
-      cout << "Passed! ";
+      cout << *cPuzzle;
+      //cout << "Passed! ";
     }
     else
       cout << "No solutions.\n";
