@@ -1,0 +1,1 @@
+Solves a sudoku puzzle that is given over standard input, and outputs all valid solutions to standard output. Input is given in the form of 81 row-major ordered characters, which can either be the digits 1-9 or a ".", which represents an unknown cell. Uses various deductive methods to solve the puzzle. Most puzzles can be solved in under .5 seconds.
